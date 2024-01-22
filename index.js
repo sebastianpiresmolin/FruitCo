@@ -48,14 +48,16 @@ let fruitBoxes = [
 ];
 
 async function renderPage(response, page) {
+  const mappedFruitBoxes = fruitBoxes.map((item) => {
+    return {
+      id: item.Id,
+      name: item.Name,
+      articles: item.Articles,
+    };
+  });
+
   response.render(page, {
-    fruitBoxes: fruitBoxes.map((item) => {
-      return {
-        id: item.Id,
-        name: item.Name,
-        articles: item.Articles,
-      };
-    }),
+    fruitBox: mappedFruitBoxes,
   });
 }
 
@@ -64,7 +66,7 @@ app.get('/', async (request, response) => {
 });
 
 app.get('/getAll', async (request, response) => {
-  renderPage(response, 'getAll', { fruitBoxes });
+  renderPage(response, 'getAll');
 });
 
 app.get('/getAllById/:id', async (request, response) => {
@@ -77,5 +79,7 @@ app.get('/addFruitBox', async (request, response) => {});
 app.get('/getBoxesIncludingFruit/:fruit', async (request, response) => {
   const fruit = request.params.fruit;
 });
+
+app.use(express.static('static'));
 
 app.listen(8001);
