@@ -1,14 +1,14 @@
 import express from 'express';
+import renderPage from './src/renderPage.js';
 import getAll from './src/getAll.js';
 import getAllById from './src/getAllById.js';
-import { join } from 'path';
+import getBoxesIncludingFruit from './src/getBoxesIncludingFruit.js';
+
 
 const app = express();
 
 
-function renderPage(response, page) {
-  response.sendFile(join(process.cwd(), `${page}.html`));
-}
+
 
 app.get('/', async (request, response) => {
   renderPage(response, 'index');
@@ -23,11 +23,12 @@ app.get('/getAllById/:id', async (request, response) => {
   getAllById(response, id);
 });
 
-app.get('/addFruitBox', async (request, response) => {});
-
 app.get('/getBoxesIncludingFruit/:fruit', async (request, response) => {
   const fruit = request.params.fruit;
+  getBoxesIncludingFruit(response, fruit);
 });
+
+app.get('/addFruitBox', async (request, response) => {});
 
 app.use(express.static('static'));
 
