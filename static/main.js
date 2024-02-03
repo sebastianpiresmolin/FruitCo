@@ -166,3 +166,28 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+document.getElementById('search').addEventListener('click', () => {
+  let searchBox = document.getElementById('searchBox');
+  let addForm = document.getElementById('AddForm');
+
+  if (searchBox) {
+    searchBox.classList.add('active');
+  }
+
+  if (addForm && addForm.classList.contains('active')) {
+    addForm.classList.remove('active');
+  }
+});
+
+document.getElementById('add').addEventListener('click', () => {
+  let addForm = document.getElementById('AddForm');
+  let searchBox = document.getElementById('searchBox');
+
+  if (addForm) {
+    addForm.classList.add('active');
+  }
+
+  if (searchBox && searchBox.classList.contains('active')) {
+    searchBox.classList.remove('active');
+  }
+});
