@@ -5,9 +5,9 @@ document
     let searchValue = document.getElementById('search').value;
 
     if (isNaN(searchValue)) {
-      window.location.href = `http://localhost:8001/getBoxesIncludingFruit/${searchValue}`;
+      window.location.href = `/getBoxesIncludingFruit/${searchValue}`;
     } else {
-      window.location.href = `http://localhost:8001/getAllById/${searchValue}`;
+      window.location.href = `/getAllById/${searchValue}`;
     }
   });
 
