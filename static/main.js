@@ -5,7 +5,8 @@ let filteredBoxes = [];
 async function handleSearch() {
   // Get the search value from the input field
   let searchValue = document.getElementById('searchInput').value;
-
+  // Clear the input field
+  document.getElementById('searchInput').value = '';
   // Get the result list element
   let resultList = document.getElementById('resultList');
   // Remove all child nodes of the result list to clear previous results
@@ -69,39 +70,98 @@ document.addEventListener('DOMContentLoaded', () => {
     .addEventListener('click', handleSearch);
 });
 
-// Display all fruit boxes function
-let allBoxes = [];
-
+// Define an asynchronous function to handle getting all boxes
 async function handleGetAll() {
+  // Send a GET request to the '/getAll' endpoint
   const response = await fetch('/getAll');
+  // Wait for the response and convert it to JSON
   allBoxes = await response.json();
 
-  for (let i = 0; i < allBoxes.boxes.length; i++) {
-    let li = document.createElement('li');
+  // Get the result list element
+  let resultList = document.getElementById('resultList');
 
-    let id = document.createElement('h2');
-    id.classList.add('customerId');
-    id.textContent = `ID: ${allBoxes.boxes[i].id}`;
-
-    let name = document.createElement('h3');
-    name.classList.add('customerName');
-    name.textContent = `Customer: ${allBoxes.boxes[i].name}`;
-
-    let fruit = document.createElement('p');
-    fruit.classList.add('customerFruit');
-    fruit.textContent = `Articles: ${allBoxes.boxes[i].fruit}`;
-
-    li.appendChild(id);
-    li.appendChild(name);
-    li.appendChild(fruit);
-    li.classList.add('order');
-
-    document.getElementById('resultList').appendChild(li);
+  // Remove all child nodes of the result list to clear previous results
+  while (resultList.firstChild) {
+    resultList.removeChild(resultList.firstChild);
   }
 
+  // Check if allBoxes.boxes is an array and has elements
+  if (Array.isArray(allBoxes.boxes) && allBoxes.boxes.length > 0) {
+    // If it does, create and append a list item for each box
+    for (let i = 0; i < allBoxes.boxes.length; i++) {
+      // Create a new list item
+      let li = document.createElement('li');
+
+      // Create a new h2 element for the box ID
+      let id = document.createElement('h2');
+      id.classList.add('customerId');
+      id.textContent = `ID: ${allBoxes.boxes[i].id}`;
+
+      // Create a new h3 element for the customer name
+      let name = document.createElement('h3');
+      name.classList.add('customerName');
+      name.textContent = `Customer: ${allBoxes.boxes[i].name}`;
+
+      // Create a new p element for the fruit
+      let fruit = document.createElement('p');
+      fruit.classList.add('customerFruit');
+      fruit.textContent = `Articles: ${allBoxes.boxes[i].fruit}`;
+
+      // Append the ID, name, and fruit elements to the list item
+      li.appendChild(id);
+      li.appendChild(name);
+      li.appendChild(fruit);
+      // Add the 'order' class to the list item
+      li.classList.add('order');
+
+      // Append the list item to the result list
+      resultList.appendChild(li);
+    }
+  }
+
+  // Return all boxes
   return allBoxes;
 }
 
+document.getElementById('showAll').addEventListener('click', handleGetAll);
+
+// Wait until the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('showAll').addEventListener('click', handleGetAll);
+  // Add a click event listener to the 'addButton' element
+  document.getElementById('addButton').addEventListener('click', () => {
+    // Get the value of the 'name' input field
+    const name = document.getElementById('addName').value;
+    // Get the value of the 'fruit' input field
+    const fruit = document.getElementById('addFruit').value;
+    // Clear the input fields
+    document.getElementById('addName').value = '';
+    document.getElementById('addFruit').value = '';
+
+    // Generate a random ID
+    const id = Math.floor(Math.random() * 100000) + 1;
+
+    // Create a data object with the ID, name, and fruit
+    const data = {
+      Id: id,
+      Name: name,
+      // Split the fruit string into an array of fruits
+      Articles: fruit.split(' '),
+    };
+
+    // Send a POST request to the '/addFruitBox' endpoint with the data object
+    fetch('/addFruitBox', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Log the response data to the console
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        // Log any errors to the console
+        console.error('Error:', error);
+      });
+  });
 });
