@@ -4,8 +4,10 @@ let filteredBoxes = [];
 async function handleSearch() {
   let searchValue = document.getElementById('searchInput').value;
 
-  // Clear previous results
-  document.getElementById('resultList').innerHTML = '';
+  let resultList = document.getElementById('resultList');
+  while (resultList.firstChild) {
+    resultList.removeChild(resultList.firstChild);
+  }
 
   if (isNaN(searchValue)) {
     const response = await fetch(`/getBoxesIncludingFruit/${searchValue}`);
