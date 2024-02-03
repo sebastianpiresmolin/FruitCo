@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+    <script src='main.js' defer></script>
 </head>
+
 <body>
     <main>
         <h1 class="title">FruitCo</h1>
-        <div class="container">
+        <div class="filterContainer">
             <ul>
                 <li><button id="showAll">Show All</button></li>
                 <li><button id="search">Search by ID or fruit</button></li>
@@ -22,12 +24,17 @@
                 <input type="text" id="searchInput" placeholder="Search by ID or fruit">
                 <button id="searchButton">Search</button>
             </div>
-            <div class="addBox">
-                <input type="text" id="addName" placeholder="Enter name of customer">
-                <input type="text" id="addFruit" placeholder="Enter fruits">
-                <button id="addButton">Add</button>
-            </div>
+            <form id="AddForm">
+                <input type="text" id="AddName" name="name" placeHolder="Enter customer name" required>
+                <input type="text" id="AddName" name="name" placeHolder="Enter fruits separated by spaces" required>
+                <button type="button" onclick="submitForm()">Submit</button>
+            </form>
+        </div>
+        <div class="resultContainer">
+            <ul id="resultList">
+            </ul>
         </div>
     </main>
 </body>
+
 </html>
